@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Turn Off My Fucking Data</string>
     <string name="title_activity_maps">Add Location</string>
-    <string name="location_hint">Enter location name...</string>
+    <string name="location_hint">Enter location name…</string>
+    <string name="preferences_filename">com.lukepothier.turnoffmyfuckingdata.geofences</string>
 </resources>
