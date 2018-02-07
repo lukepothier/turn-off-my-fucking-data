@@ -1,3 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="com.lukepothier.turnoffmyfuckingdata.MapsActivity">
+
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,3 +15,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.lukepothier.turnoffmyfuckingdata.MapsActivity" />
+
+<EditText
+    android:id="@+id/editTextLocationName"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="top|center_horizontal"
+    android:background="@drawable/rounded_edit_text"
+    android:elevation="16dp"
+    android:hint="@string/location_hint"
+    android:maxLines="1"
+    android:inputType="textCapSentences"
+    android:imeOptions="actionDone"
+    android:visibility="invisible"
+    android:padding="@dimen/item_padding"
+    android:layout_margin="@dimen/item_padding"/>
+
+<android.support.design.widget.FloatingActionButton
+    android:id="@+id/fabAddMapLocation"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="@dimen/fab_margin"
+    app:srcCompat="@drawable/ic_add_white_24dp" />
+
+<android.support.design.widget.FloatingActionButton
+    android:id="@+id/fabConfirmLocation"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="@dimen/fab_margin"
+    android:visibility="gone"
+    app:srcCompat="@drawable/ic_done_white_24dp" />
+
+</android.support.design.widget.CoordinatorLayout>
