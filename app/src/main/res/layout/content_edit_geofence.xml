@@ -1,4 +1,5 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<fragment
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment"
@@ -6,4 +7,69 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:layout="@layout/fragment_edit_geofence" />
+    tools:layout="@layout/fragment_edit_geofence">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/location_name_hint"
+            android:layout_margin="@dimen/item_padding">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/editTextLocationName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/location_latitude_hint"
+            android:layout_margin="@dimen/item_padding">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/editTextLocationLatitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/location_longitude_hint"
+            android:layout_margin="@dimen/item_padding">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/editTextLocationLongitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/location_radius_hint"
+            android:layout_margin="@dimen/item_padding">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/editTextLocationRadius"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+</fragment>
