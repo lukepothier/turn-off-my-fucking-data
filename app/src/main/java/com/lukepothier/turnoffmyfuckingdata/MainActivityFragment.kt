@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.LinearLayout
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
 class MainActivityFragment : Fragment() {
@@ -15,17 +17,21 @@ class MainActivityFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
-        addAnimals()
+        populateLocationsList()
         view.recyclerViewLocations.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
         view.recyclerViewLocations.adapter = LocationsAdapter(locations)
         return view
     }
 
-    private fun addAnimals() {
-        locations.add("place 1")
-        locations.add("place 2")
-        locations.add("place 3")
-        locations.add("place 4")
-        locations.add("place 5")
+    private fun populateLocationsList() {
+        val prefs = context.getSharedPreferences(resources.getString(R.string.preferences_filename), 0)
+        val allGeofences = prefs.all
+
+        for (geofence in allGeofences) {
+            val gson = Gson()
+            val json = prefs.getString(geofence.key, "")
+            val deserializedGeofence = gson.fromJson<Geofence>(json, Geofence::class.java)
+            locations.add(deserializedGeofence.name)
+        }
     }
 }
