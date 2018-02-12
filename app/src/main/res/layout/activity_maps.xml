@@ -16,7 +16,7 @@ tools:context="com.lukepothier.turnoffmyfuckingdata.MapsActivity">
     android:layout_height="match_parent"
     tools:context="com.lukepothier.turnoffmyfuckingdata.MapsActivity" />
 
-<EditText
+<com.lukepothier.turnoffmyfuckingdata.CancellableEditText
     android:id="@+id/editTextLocationName"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
