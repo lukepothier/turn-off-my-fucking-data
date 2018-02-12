@@ -29,7 +29,7 @@ class LocationsAdapter(private val list:ArrayList<Geofence>) : RecyclerView.Adap
 
             itemView.setOnClickListener({
                 val intent = Intent(itemView.context, EditGeofenceActivity::class.java)
-                intent.putExtra("locationName", data.name)
+                intent.putExtra("geofenceId", data.id.toString())
                 itemView.context.startActivity(intent)
             })
         }

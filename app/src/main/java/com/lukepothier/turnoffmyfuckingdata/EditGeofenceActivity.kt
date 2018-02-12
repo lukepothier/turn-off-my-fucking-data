@@ -3,6 +3,7 @@ package com.lukepothier.turnoffmyfuckingdata
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.google.gson.Gson
 
 import kotlinx.android.synthetic.main.activity_edit_geofence.*
@@ -18,9 +19,11 @@ class EditGeofenceActivity : AppCompatActivity() {
         val extras = intent.extras
         if (extras != null) {
             val prefs = this.getSharedPreferences(resources.getString(R.string.preferences_filename), 0)
-            val geofence = prefs.getString(extras.getString("locationName"), "")
+            val geofence = prefs.getString(extras.getString("geofenceId"), "")
             val gson = Gson()
             val deserializedGeofence = gson.fromJson<Geofence>(geofence, Geofence::class.java)
+
+            Log.d("YO", geofence)
 
             editTextLocationName.setText(deserializedGeofence.name)
             editTextLocationLatitude.setText(deserializedGeofence.location.latitude.toString())

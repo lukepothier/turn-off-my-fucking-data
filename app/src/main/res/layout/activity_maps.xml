@@ -28,7 +28,7 @@ tools:context="com.lukepothier.turnoffmyfuckingdata.MapsActivity">
     android:imeOptions="actionDone"
     android:visibility="gone"
     android:padding="@dimen/item_padding"
-    android:layout_margin="@dimen/item_padding"/>
+    android:layout_margin="@dimen/item_padding" />
 
 <android.support.design.widget.FloatingActionButton
     android:id="@+id/fabAddMapLocation"
