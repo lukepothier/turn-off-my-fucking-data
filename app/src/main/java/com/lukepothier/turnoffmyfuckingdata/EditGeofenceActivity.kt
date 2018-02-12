@@ -3,11 +3,10 @@ package com.lukepothier.turnoffmyfuckingdata
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.google.gson.Gson
-
 import kotlinx.android.synthetic.main.activity_edit_geofence.*
 import kotlinx.android.synthetic.main.content_edit_geofence.*
+import android.text.InputFilter
 
 class EditGeofenceActivity : AppCompatActivity() {
 
@@ -23,12 +22,16 @@ class EditGeofenceActivity : AppCompatActivity() {
             val gson = Gson()
             val deserializedGeofence = gson.fromJson<Geofence>(geofence, Geofence::class.java)
 
-            Log.d("YO", geofence)
-
             editTextLocationName.setText(deserializedGeofence.name)
+
             editTextLocationLatitude.setText(deserializedGeofence.location.latitude.toString())
+            editTextLocationLatitude.filters = arrayOf<InputFilter>(MinMaxInputFilter(-90, 90))
+
             editTextLocationLongitude.setText(deserializedGeofence.location.longitude.toString())
+            editTextLocationLongitude.filters = arrayOf<InputFilter>(MinMaxInputFilter(-180, 180))
+
             editTextLocationRadius.setText((deserializedGeofence.radiusMetres.toString()))
+            editTextLocationRadius.filters = arrayOf<InputFilter>(MinMaxInputFilter(0, 10000))
         }
 
         fabSave.setOnClickListener { view ->
