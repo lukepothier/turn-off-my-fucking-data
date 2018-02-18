@@ -11,10 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.google.android.gms.maps.model.LatLng
-import android.content.DialogInterface
-import android.os.Build
 import android.support.v7.app.AlertDialog
-
 
 class EditGeofenceActivity : AppCompatActivity() {
 
