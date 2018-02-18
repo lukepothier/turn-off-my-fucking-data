@@ -16,5 +16,8 @@ class MainActivity : AppCompatActivity() {
         fabAddLocation.setOnClickListener {
             startActivity(Intent(this, MapsActivity::class.java))
         }
+
+        // Start LocationService
+        this.startService(Intent(this, LocationService::class.java))
     }
 }
