@@ -5,4 +5,5 @@
     <color name="colorPrimaryLight">#8EACBB</color>
     <color name="colorSecondary">#FF0000</color>
     <color name="colorGreen">#4CAF50</color>
+    <color name="colorGreenSemiTransparent">#7F4CAF50</color>
 </resources>
