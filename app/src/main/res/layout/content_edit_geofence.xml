@@ -70,6 +70,13 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <CheckBox
+            android:id="@+id/checkboxReenableLocationOnLeave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/item_padding"
+            android:text="@string/location_reenable_hint" />
+
     </LinearLayout>
 
 </fragment>

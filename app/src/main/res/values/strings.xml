@@ -6,6 +6,7 @@
     <string name="location_latitude_hint">Latitude</string>
     <string name="location_longitude_hint">Longitude</string>
     <string name="location_radius_hint">Radius (metres)</string>
+    <string name="location_reenable_hint">Re-enable data on exit</string>
     <string name="preferences_filename">com.lukepothier.turnoffmyfuckingdata.geofences</string>
     <string name="title_activity_edit_geofence">Edit Location</string>
 </resources>
