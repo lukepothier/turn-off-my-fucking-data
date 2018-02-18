@@ -1,17 +1,20 @@
 package com.lukepothier.turnoffmyfuckingdata
 
-import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_edit_geofence.*
 import kotlinx.android.synthetic.main.content_edit_geofence.*
 import android.text.InputFilter
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import com.google.android.gms.maps.model.LatLng
-import java.util.*
+import android.content.DialogInterface
+import android.os.Build
+import android.support.v7.app.AlertDialog
+
 
 class EditGeofenceActivity : AppCompatActivity() {
 
@@ -63,5 +66,33 @@ class EditGeofenceActivity : AppCompatActivity() {
             Toast.makeText(this, "Location \"$newGeofenceName\" updated.", Toast.LENGTH_SHORT).show()
             finish()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_delete, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == R.id.buttonDelete) {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            builder.setTitle("Delete \"${geofence.name}\"?")
+                    .setMessage("Are you sure you want to delete \"${geofence.name}\"?")
+                    .setPositiveButton(android.R.string.yes, { _, _ ->
+                        val editor = prefs.edit()
+                        editor.remove(geofence.id.toString())
+                        editor.apply()
+
+                        Toast.makeText(this, "Location \"${geofence.name}\" removed.", Toast.LENGTH_SHORT).show()
+                        finish()
+                    })
+                    .setNegativeButton(android.R.string.no, { _, _ ->
+                    })
+                    .show()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
