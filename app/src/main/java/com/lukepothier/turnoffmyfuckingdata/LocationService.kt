@@ -1,26 +1,28 @@
 package com.lukepothier.turnoffmyfuckingdata
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import android.os.IBinder
 import android.os.Bundle
 import android.util.Log
-import android.net.ConnectivityManager
-import android.content.ContentValues.TAG
-import android.telephony.TelephonyManager
-import android.os.Build
-import java.lang.reflect.Method
+import android.support.annotation.RequiresApi
+import android.support.v4.app.NotificationCompat
+import android.support.v4.app.NotificationManagerCompat
 
-
-private const val tag = "LocationService"
+private const val tag = "TOMFD::LocationService"
 private const val LOCATION_INTERVAL = 5L
 private const val LOCATION_DISTANCE = 10f
 
 class LocationService : Service() {
-    private var mLocationManager: LocationManager? = null
+    private var locationManager: LocationManager? = null
+    private var notificationManager: NotificationManager? = null
 
     inner class LocationListener(provider: String) : android.location.LocationListener {
 
@@ -46,8 +48,9 @@ class LocationService : Service() {
 
     override fun onCreate() {
         initializeLocationManager()
+        initializeNotificationManager()
         try {
-            mLocationManager!!.requestLocationUpdates(
+            locationManager!!.requestLocationUpdates(
                     LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
                     mLocationListeners[1])
         } catch (ex: java.lang.SecurityException) {
@@ -57,7 +60,7 @@ class LocationService : Service() {
         }
 
         try {
-            mLocationManager!!.requestLocationUpdates(
+            locationManager!!.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
                     mLocationListeners[0])
         } catch (ex: java.lang.SecurityException) {
@@ -70,10 +73,10 @@ class LocationService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mLocationManager != null) {
+        if (locationManager != null) {
             for (i in mLocationListeners.indices) {
                 try {
-                    mLocationManager!!.removeUpdates(mLocationListeners[i])
+                    locationManager!!.removeUpdates(mLocationListeners[i])
                 } catch (ex: Exception) {
                     Log.i(tag, "Failed to remove location listeners, ignore", ex)
                 }
@@ -83,61 +86,55 @@ class LocationService : Service() {
     }
 
     private fun initializeLocationManager() {
-        if (mLocationManager == null) {
-            mLocationManager = applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (locationManager == null) {
+            locationManager = applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        }
+    }
+
+    private fun initializeNotificationManager() {
+        if (notificationManager == null) {
+            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         }
     }
 
     private fun setDataEnabled(location: Location)
     {
-        val bv = Build.VERSION.SDK_INT
-
-        try {
-            when {
-                bv == Build.VERSION_CODES.FROYO -> {
-                    val dataConnSwitchMethod: Method
-                    val telephonyManagerClass: Class<*>
-                    val iTelephonyStub: Any
-                    val iTelephonyClass: Class<*>
-
-                    val telephonyManager = applicationContext
-                            .getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-
-                    telephonyManagerClass = Class.forName(telephonyManager.javaClass.name)
-                    val getITelephonyMethod = telephonyManagerClass.getDeclaredMethod("getITelephony")
-                    getITelephonyMethod.isAccessible = true
-                    iTelephonyStub = getITelephonyMethod.invoke(telephonyManager)
-                    iTelephonyClass = Class.forName(iTelephonyStub.javaClass.name)
-
-                    if (false) {
-                        dataConnSwitchMethod = iTelephonyClass
-                                .getDeclaredMethod("enableDataConnectivity")
-                    } else {
-                        dataConnSwitchMethod = iTelephonyClass
-                                .getDeclaredMethod("disableDataConnectivity")
-                    }
-                    dataConnSwitchMethod.isAccessible = true
-                    dataConnSwitchMethod.invoke(iTelephonyStub)
-                }
-                bv >= Build.VERSION_CODES.LOLLIPOP -> {
-                    val tm = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-                    val methodSet = Class.forName(tm.javaClass.name).getDeclaredMethod("setDataEnabled", java.lang.Boolean.TYPE)
-                    methodSet.invoke(tm, false)
-                }
-                else -> {
-                    val conman = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                    val conmanClass = Class.forName(conman.javaClass.name)
-                    val iConnectivityManagerField = conmanClass.getDeclaredField("mService")
-                    iConnectivityManagerField.isAccessible = true
-                    val iConnectivityManager = iConnectivityManagerField.get(conman)
-                    val iConnectivityManagerClass = Class.forName(iConnectivityManager.javaClass.name)
-                    val setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", java.lang.Boolean.TYPE)
-                    setMobileDataEnabledMethod.isAccessible = true
-                    setMobileDataEnabledMethod.invoke(iConnectivityManager, false)
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Error setting data enabled state", e)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel()
         }
+
+        val mBuilder = NotificationCompat.Builder(this, "TURN_OFF_MY_FUCKING_DATA")
+                .setChannelId(getString(R.string.notification_channel_id))
+                .setSmallIcon(R.drawable.ic_place_primary_24dp)
+                .setContentTitle("Test")
+                .setContentText("${location.latitude} - ${location.longitude}")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setOngoing(true)
+                .setAutoCancel(false)
+
+        val notificationManager = NotificationManagerCompat.from(this)
+
+        notificationManager.notify(1, mBuilder.build())
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel() {
+        val mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val id = getString(R.string.notification_channel_id)
+        val name = getString(R.string.notification_channel_name)
+        val description = getString(R.string.notification_channel_description)
+
+        val importance = NotificationManager.IMPORTANCE_HIGH
+
+        val mChannel = NotificationChannel(id, name, importance)
+
+        mChannel.description = description
+        mChannel.enableLights(true)
+        mChannel.lightColor = Color.WHITE
+        mChannel.enableVibration(true)
+        mChannel.vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
+
+        mNotificationManager.createNotificationChannel(mChannel)
     }
 }

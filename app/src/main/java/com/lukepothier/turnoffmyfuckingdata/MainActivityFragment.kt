@@ -29,7 +29,7 @@ class MainActivityFragment : Fragment() {
 
         locations.clear()
 
-        val prefs = context.getSharedPreferences(resources.getString(R.string.preferences_filename), 0)
+        val prefs = context!!.getSharedPreferences(resources.getString(R.string.preferences_filename), 0)
         val allGeofences = prefs.all
 
         for (geofence in allGeofences) {
